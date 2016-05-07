@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 char *GetMemory()
 {
     char p[]="hello world";
@@ -16,8 +15,7 @@ void Test0()
     printf(str);
 }
 
-void GetMemory(char **p, int num)
-{
+void GetMemory(char **p, int num){
     *p = (char*)malloc(num);
 }
 
@@ -34,8 +32,7 @@ void Test2()
     char *str= (char*)malloc(16);
     strcpy(str, "hello");
     free(str);
-    if(str != NULL)
-    {
+    if(str != NULL){
         strcpy(str, "world");
         printf(str);
     }
@@ -53,23 +50,15 @@ void Test3()
     printf(str);
 }
 
-
 int main()
 {
     typedef void(*TestFun)();
-
     TestFun tf[]={Test0,Test1,Test2,Test3};
-
     for(int i=0;i< 4;i++)
     {
         printf("\nTest%i: ",i);
-        try{
-            tf[i]();
-        }
-        catch(...)
-        {
-                   
-        }
+        try{ tf[i]();
+        }catch(...)NULL;
     }
     char p = getchar();
     return 0;
