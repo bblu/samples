@@ -1,0 +1,55 @@
+$nasm -f elf hello.asm -o h.o
+$nasm -f elf world.asm -o w.o
+$ld -m elf_i386 h.o w.o -o hw
+
+#without -m elf_i386 will rise an error
+
+bblu@bblu-G460:~/repo/samples/asm$ readelf -e 12
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Intel 80386
+  Version:                           0x1
+  Entry point address:               0x8048094
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          272 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         2
+  Size of section headers:           40 (bytes)
+  Number of section headers:         10
+  Section header string table index: 7
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        08048080 000080 000007 00  AX  0   0 16
+  [ 2] hellodata         PROGBITS        08048087 000087 00000d 00   A  0   0  1
+  [ 3] hellotext         PROGBITS        08048094 000094 000018 00   A  0   0  1
+  [ 4] worlddata         PROGBITS        080480ac 0000ac 000001 00   A  0   0  1
+  [ 5] worldtext         PROGBITS        080480ad 0000ad 000015 00   A  0   0  1
+  [ 6] .bss              NOBITS          080490c4 0000c4 000040 00  WA  0   0  4
+  [ 7] .shstrtab         STRTAB          00000000 0000c2 00004e 00      0   0  1
+  [ 8] .symtab           SYMTAB          00000000 0002a0 000120 10      9  13  4
+  [ 9] .strtab           STRTAB          00000000 0003c0 000053 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings)
+  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  O (extra OS processing required) o (OS specific), p (processor specific)
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x000000 0x08048000 0x08048000 0x000c2 0x000c2 R E 0x1000
+  LOAD           0x0000c4 0x080490c4 0x080490c4 0x00000 0x00040 RW  0x1000
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .text hellodata hellotext worlddata worldtext 
+   01     .bss 
+
