@@ -1,4 +1,4 @@
-;MBR type by bblu @ 2016
+;MBR type by bblu @ 201
 ;--------------------------------------
 SECTION MBR vstart=0x7c00
 	mov ax,cs
