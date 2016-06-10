@@ -1,5 +1,6 @@
 *.swp
 *.o
 *.out
+*.bin
 obj/
 dist/

@@ -1,0 +1,27 @@
+
+nasm mbr2.s -o mbr.bin
+
+dd if=./mbr.bin of=/opt/bochs/60M.img bs=512 count=1 conv=notrunc
+
+
+./configure --prefix=/opt/bochs --enable-debugger --enable-disasm --enable-sb16=dummy --enable-iodebug --enable-x86-debugger --with-x --with-x11
+
+
+bblu@X201:/opt/bochs$ bin/bochs -help cpu
+========================================================================
+                     Bochs x86 Emulator 2.6.8.svn
+              Built from SVN snapshot after release 2.6.8
+                  Compiled on Jun  9 2016 at 14:47:06
+========================================================================
+Supported CPU models:
+
+bx_generic
+pentium
+pentium_mmx
+amd_k6_2_chomper
+p2_klamath
+p3_katmai
+p4_willamette
+core_duo_t2400_yonah
+atom_n270
+
