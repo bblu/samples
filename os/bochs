@@ -24,4 +24,22 @@ p3_katmai
 p4_willamette
 core_duo_t2400_yonah
 atom_n270
+========================================================================
+<bochs:1> help
+h|help - show list of debugger commands
+h|help command - show short command description
+-*- Debugger control -*-
+    help, q|quit|exit, set, instrument, show, trace, trace-reg,
+    trace-mem, u|disasm, ldsym, slist
+-*- Execution control -*-
+    c|cont|continue, s|step, p|n|next, modebp, vmexitbp
+-*- Breakpoint management -*-
+    vb|vbreak, lb|lbreak, pb|pbreak|b|break, sb, sba, blist,
+    bpe, bpd, d|del|delete, watch, unwatch
+-*- CPU and memory contents -*-
+    x, xp, setpmem, writemem, crc, info,
+    r|reg|regs|registers, fp|fpu, mmx, sse, sreg, dreg, creg,
+    page, set, ptime, print-stack, ?|calc
+-*- Working with bochs param tree -*-
+    show "param", restore
 
