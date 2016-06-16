@@ -75,7 +75,7 @@ mov eax, cr0
 or eax, 0x00000001
 mov cr0,eax
 
-jmp dword SELECTOR_CODE:p_mode_start
+jmp  SELECTOR_CODE:p_mode_start
 
 
 [bits 32]

@@ -1,6 +1,5 @@
 *.swp
 *.o
-*.sh
 *.out
 *.bin
 obj/

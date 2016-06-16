@@ -8,7 +8,7 @@ SECTION MBR vstart=0x7c00
 	mov ss,ax
 	mov fs,ax
 	mov sp,0x7c00
-	mov ax,0xb800			;graphic memory text mode begin with 0xb800
+	mov ax,0xb800	;graphic memory text mode begin with 0xb800
 	mov gs,ax
 
 
@@ -34,12 +34,16 @@ SECTION MBR vstart=0x7c00
 ;writer 1 MBR
 	mov byte [gs:0x00],'1'
 	mov byte [gs:0x01],0xA4	;A:background green and flash, 4:forecolor is red
+
 	mov byte [gs:0x02],' '
 	mov byte [gs:0x03],0xA4
+
 	mov byte [gs:0x04],'M'
 	mov byte [gs:0x05],0xA4
+
 	mov byte [gs:0x06],'B'
 	mov byte [gs:0x07],0xA4
+
 	mov byte [gs:0x08],'R'
 	mov byte [gs:0x09],0xA4
 
@@ -47,7 +51,7 @@ SECTION MBR vstart=0x7c00
 
 
 ;load LBA address
-	mov eax,LOADER_START_ADDR	;very begin sector of disk
+	mov eax,LOADER_START_SECTOR	;very begin sector of disk
 	mov bx,LOADER_BASE_ADDR		;addr for write
 	mov cx,4					;counter the sectors to write
 	call rd_disk_m_16			;enter to read a sector
@@ -105,7 +109,7 @@ rd_disk_m_16:
 	in al,dx
 	and al,0x88		;the 4th bit is 1:ready to transmit data
 					;the 7th bit is 1:disk is busy
-	cmp al,0x80
+	cmp al,0x08		;typed wrong to 0x80 !!! @2016-6-16
 	jnz .not_ready
 ;5.read data from 0x1f0
 	mov ax,di	;di is the sector number for reading
