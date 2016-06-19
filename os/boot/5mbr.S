@@ -1,6 +1,6 @@
 ;MBR type by bblu @ 2016
 ;--------------------------------------
-%include "4boot.inc"
+%include "5boot.inc"
 SECTION MBR vstart=0x7c00
 	mov ax,cs
 	mov ds,ax
@@ -52,7 +52,7 @@ SECTION MBR vstart=0x7c00
 	mov cx,4					;counter the sectors to write
 	call rd_disk_m_16			;enter to read a sector
 
-	jmp LOADER_BASE_ADDR+0x300
+	jmp LOADER_BASE_ADDR + 0x300
 
 
 
