@@ -23,7 +23,7 @@ _start:
 	mov edx, str_syscall_len
 	int 0x80
 
-;;;;;;;;;;;;;;exit ;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;exit ;;;;;;;;;;;;;;;;
 	mov eax, 1
 	int 0x80
 
