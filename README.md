@@ -6,5 +6,8 @@ type sample code from book
   multithread samples
 ## os 
   os is for <操作系统 真象还原> by 郑钢
+### ch11
+>操作系统存在端目的之一就是管理资源，通常这个被管理的就是用户进程。
+
 ## javascript
   javascript 高级程序设计
