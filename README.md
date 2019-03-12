@@ -19,7 +19,8 @@ APUE这本书反复看了好几遍，尤其是工作中用的相关的网络部�
 c++程序helloworld的几种常规形态
 
 ## java
-multithread samples
+* multithread samples
+* mybitas JsonTypeHandler
   
 ## javascript
 javascript 高级程序设计  
