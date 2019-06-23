@@ -1,0 +1,39 @@
+spring:
+  mvc:
+    # 静态
+    static-path-pattern: /static/**
+    async:
+      request-timeout: 200000
+  profiles:
+    active: dao,file,dev
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10000MB
+      max-request-size: 100000MB
+  resources:
+    static-locations: file:${file.basePath}
+mybatis:
+  type-aliases-package: com.zoomway.patrol.dao
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+mapper:
+  mappers: com.zoomway.patrol.dao.BaseDAO
+  not-empty: false
+  identity: postgresql
+
+logging:
+  level:
+    com.patrol.*: debug
+    # com.patrol.aop.*: debug
+    # com.patrol.dao: debug
+    # com.patrol.controller: debug
+    # com.patrol.service: debug
+  file: spring2.log
+server:
+  servlet:
+    session:
+      timeout: 120  #秒
+

@@ -1,0 +1,11 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/patrol_let?useAffectedRows=true&allowMultiQueries=true
+    driver-class-name: org.postgresql.Driver
+    # 使用阿里的Druid连接池
+

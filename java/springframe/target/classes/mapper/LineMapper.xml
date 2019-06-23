@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zoomway.patrol.dao.LineDAO">
+    <select id="getAll" resultType="com.zoomway.patrol.entity.Line">
+        SELECT id,name,voltage FROM zw_line ORDER BY voltage;
+    </select>
+
+    <select id="getById" parameterType="int" resultType="com.zoomway.patrol.entity.Line">
+        SELECT id,name,voltage FROM zw_line WHERE id = #{id};
+    </select>
+</mapper>
