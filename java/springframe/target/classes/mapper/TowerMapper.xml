@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zoomway.patrol.dao.TowerDAO">
     <select id="getAll" resultType="com.zoomway.patrol.entity.Tower">
-        SELECT id,serial,height,width FROM zw_tower ORDER BY voltage;
+        SELECT id,name,serial,height,width FROM zw_tower ORDER BY voltage;
     </select>
 
     <select id="getByLine" parameterType="int" resultType="com.zoomway.patrol.entity.Tower">
-        SELECT id,serial,height,width FROM zw_tower WHERE line = #{line} ORDER BY serial;
+        SELECT id,name,serial,height,width FROM zw_tower WHERE line = #{line} ORDER BY serial;
     </select>
 
     <select id="getById" parameterType="int" resultType="com.zoomway.patrol.entity.Tower">

@@ -41,7 +41,7 @@ public class FileController {
     public HttpResult upload(@RequestHeader(name = "X-Tower", required = true) Integer tower,
                              MultipartFile file)throws Exception{
         HttpResult res = new HttpResult();
-        storageService.store(file);
+        String fileMd5 = storageService.store(file);
         // ... 处理文件储存逻辑
         logger.warn(file.getName());
 
