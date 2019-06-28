@@ -6,6 +6,8 @@ import com.zoomway.patrol.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @Validated
@@ -53,62 +56,51 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public HttpResult userInfo(@RequestParam("token") String token){
-        HttpResult res = new HttpResult();
-        User user = userService.getByToken(token);
-        if(user == null){
-            res.setCode(400);
-            return res.setMessage("can not get user for " + token);
+    public ResponseEntity<?> userInfo(@RequestParam("token") String token){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            User user = userService.getByToken(token);
+            if (user == null) {
+
+                map.put("error", "can not get user for " + token);
+                return new HttpResult(map, HttpStatus.BAD_REQUEST);
+            }
+            map.put("data",user);
+            return ResponseEntity.ok(map);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e);
         }
-        res.setData(user);
-        return res;
     }
 
     @RequestMapping(path={"/login"},method = {RequestMethod.POST})
     public HttpResult loginPostJson(@RequestBody User user){
-        HttpResult res = new HttpResult();
         try{
             Map<String,Object> map = userService.login(user.getUsername(),user.getPassword());
             if(map.containsKey("token")){
-                return res.setData(map);
+                return HttpResult.success(map);
             }
-            return res.setMessage(map.get("msg").toString());
+            return HttpResult.ParamError(map);
         }catch (Exception e){
             logger.error("登陆异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @RequestMapping(path={"/logout"},method = {RequestMethod.POST})
-    public HttpResult logoutPostJson(HttpServletRequest request){
-        HttpResult res = new HttpResult();
+    public ResponseEntity<?> logoutPostJson(HttpServletRequest request){
         try{
             String token = request.getHeader("X-Token");
             int c = userService.logout(token);
             if(c==1){
-                return res.setMessage("success");
+                return ResponseEntity.ok().body(token);
             }
-            res.setCode(400);
-            return res.setMessage("error");
+            Map<String,Object> map = new HashMap<>();
+            map.put("error","logout failed");
+            return ResponseEntity.badRequest().body(map);
         }catch (Exception e){
-            res.setCode(500);
-            logger.error("登陆异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
-        }
-    }
-    //登陆
-    @RequestMapping(path={"/loginForm"},method = {RequestMethod.POST})
-    public HttpResult loginFrom(@RequestParam("username") String username,@RequestParam("password") String password){
-        HttpResult res = new HttpResult();
-        try{
-            Map<String,Object> map = userService.login(username,password);
-            if(map.containsKey("token")){
-                return res.setData(map);
-            }
-            return res.setMessage(map.get("msg").toString());
-        }catch (Exception e){
-            logger.error("登陆异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
+            e.printStackTrace();
+            return new ResponseEntity<>(e,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     //登陆

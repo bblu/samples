@@ -1,41 +1,73 @@
 package com.zoomway.patrol.controller.common;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
+public class HttpResult extends ResponseEntity<Map> {
+
+    public static HttpResult ParamError(String msg){
+        Map<String,String> error = new HashMap<>();
+        error.put("error",msg);
+        return new HttpResult(error,HttpStatus.BAD_REQUEST);
+    }
+
+    public static HttpResult ServerError(Object obj){
+        Map<String,Object> error = new HashMap<>();
+        error.put("error", obj);
+        return new HttpResult(error,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public static HttpResult success(Object obj){
+        Map<String,Object> body = new HashMap<>();
+        body.put("data", obj);
+        return new HttpResult(body,HttpStatus.OK);
+    }
+
+    public static HttpResult message(String msg){
+        Map<String,String> body = new HashMap<>();
+        body.put("message", msg);
+        return new HttpResult(body,HttpStatus.OK);
+    }
+
+    public HttpResult(){
+        super(HttpStatus.OK);
+    }
+
+    public HttpResult(HttpStatus status){
+        super(status);
+    }
+
+    public HttpResult(Map body, HttpStatus status){
+        super(body,status);
+    }
+}
+
+/*
 public class HttpResult extends HashMap<String,Object> {
     //private int code = 200;
     //private String message;
     //private Object data;
 
-    /**
-     * 默认构造器
-     */
     public HttpResult() {
         this.setCode(200);
         this.setMessage("success");
     }
 
-    /**
-     * @param code 是否成功
-     */
     public HttpResult(int code) {
         this.setCode(code);
     }
 
-    /**
-     * @param code    error code
-     * @param message success or error messages
-     */
+
     public HttpResult(int code, String message) {
         this.setCode(code);
         this.setMessage(message);
     }
 
-    /**
-     * @param message 消息
-     * @param data    数据
-     */
     public HttpResult(int code, String message, Object data) {
         this.setCode(code);
         this.setMessage(message);
@@ -57,3 +89,4 @@ public class HttpResult extends HashMap<String,Object> {
         return this;
     }
 }
+*/

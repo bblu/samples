@@ -32,13 +32,12 @@ public class TaskController {
             @Range(min=0,message = "make sure offset is corrent") @RequestParam(required = false,defaultValue = "0") int offset,
             @Range(min=0,message = "make sure limit is corrent") @RequestParam(required = false,defaultValue = "0") int limit
             ){
-        HttpResult res = new HttpResult();
         if(id >0) {
-            Task t = service.getSingle(id);
-            return res.setData(t);
+            Task task = service.getSingle(id);
+            return HttpResult.success(task);
         }
         List<Task> tasks = service.getTask(offset,limit);
-        return res.setData(tasks);
+        return HttpResult.success(tasks);
     }
 /**
  * 任务详情 by wblu @ 2019-05-28

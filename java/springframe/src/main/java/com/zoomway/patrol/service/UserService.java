@@ -2,10 +2,14 @@ package com.zoomway.patrol.service;
 
 
 //import com.zoomway.patrol.dao.loginTicketsDAO;
+import com.zoomway.patrol.controller.common.HttpResult;
 import com.zoomway.patrol.dao.UserDAO;
 import com.zoomway.patrol.entity.User;
 
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -60,31 +64,36 @@ public class UserService {
 
     //登陆
     public Map<String, Object> login(String username, String password) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (StringUtils.isEmpty(username)) {
-            map.put("msg", "用户名不能为空");
-            return map;
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            map.put("error", "username or password can not be empty");
+            return  map;
         }
+        try {
+            User user = userDAO.getByUsername(username);
+            if (user == null) {
+                map.put("error", "account is not exist");
+                return  map;
+            }
 
-        if (StringUtils.isEmpty(password)) {
-            map.put("msg", "密码不能为空");
+            //if (!WendaUtil.MD5(password + user.getSalt()).equals(user.getPassword())) {
+            if (!password.equals(user.getPassword())) {
+                map.put("error", "please input the correct password");
+                return map;
+            }
+            String ticket = addLoginTicket(user.getId());
+            map.put("token", ticket);
+            return map;
+        }catch(MyBatisSystemException e){
+            if(e.getCause()!=null ){
+                // "Failed to obtain JDBC Connection"
+                map.put("error",e.getCause().getMessage());
+            }else {
+                e.printStackTrace();
+                map.put("error",e.getMessage());
+            }
             return map;
         }
-
-        User user = userDAO.getByUsername(username);
-        if (user == null) {
-            map.put("msg", "用户名不存在");
-            return map;
-        }
-
-        //if (!WendaUtil.MD5(password + user.getSalt()).equals(user.getPassword())) {
-        if (!password.equals(user.getPassword())) {
-            map.put("msg", "密码错误");
-            return map;
-        }
-        String ticket = addLoginTicket(user.getId());
-        map.put("token", ticket);
-        return map;
     }
 
     public int logout(String token){

@@ -44,8 +44,7 @@ public class FileController {
         String fileMd5 = storageService.store(file);
         // ... 处理文件储存逻辑
         logger.warn(file.getName());
-
-        return res.setData("ok"+ tower);
+        return HttpResult.message("ok");
     }
 /**
  * 任务详情 by wblu @ 2019-05-28

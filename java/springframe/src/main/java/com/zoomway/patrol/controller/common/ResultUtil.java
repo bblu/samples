@@ -12,7 +12,7 @@ public class ResultUtil {
      * @return
      */
     public static HttpResult success(Object data) {
-        HttpResult result = new HttpResult(200,"success",data);
+        HttpResult result = null;// new HttpResult(200,"success",data);
         return result;
     }
 
@@ -24,7 +24,7 @@ public class ResultUtil {
      * @return
      */
     public static HttpResult failed(int code, String msg) {
-        HttpResult result = new HttpResult(code,msg);
+        HttpResult result = null;// new HttpResult(code,msg);
         return result;
     }
 

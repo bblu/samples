@@ -6,12 +6,15 @@ import com.zoomway.patrol.service.LineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.hibernate.validator.constraints.Range;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //@EnableTransactionManagement
 
@@ -30,21 +33,21 @@ public class LineController {
      * @param style  返回数据格式默认list，否则是tree
      */
     @GetMapping(value = "/")
-    public HttpResult getLine(@RequestParam(required = false,defaultValue = "list")String style){
-        HttpResult res = new HttpResult();
+    public ResponseEntity<?> getLine(@RequestParam(required = false,defaultValue = "list")String style){
         try {
             List<Line> lines = lineService.getLine();
             if(lines == null){
-                res.setCode(500);
-                return res.setMessage("internal error");
+                return  new ResponseEntity("NotFindeError",HttpStatus.BAD_REQUEST);
             }
             if(style.equals("tree")){
 
             }
-            return res.setData(lines);
+            Map<String,Object> map = new HashMap<>();
+            map.put("data",lines);
+            return new ResponseEntity(map,HttpStatus.OK);
         }catch (Exception e){
             logger.error("请求线路异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     /**
@@ -54,17 +57,15 @@ public class LineController {
      */
     @GetMapping(value = "/list")
     public HttpResult getLine(@RequestParam(required = false,defaultValue = "0")Integer debug){
-        HttpResult res = new HttpResult();
         try {
             List<Line> lines = lineService.getLine();
             if(lines == null){
-                res.setCode(500);
-                return res.setMessage("internal error");
+                return HttpResult.ServerError("Cannot find any power line");
             }
-            return res.setData(lines);
+            return HttpResult.success(lines);
         }catch (Exception e){
             logger.error("请求线路异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
+            return HttpResult.ServerError(e);
         }
     }
     /**
@@ -74,20 +75,17 @@ public class LineController {
      */
     @GetMapping(value = "/tree")
     public HttpResult getLineTree(@RequestParam(required = false,defaultValue = "0")Integer debug){
-        HttpResult res = new HttpResult();
         try {
             List<Line> lines = lineService.getLine();
             if(lines == null){
-                res.setCode(500);
-                return res.setMessage("internal error");
+                return HttpResult.ServerError("Cannot find any power line");
             }
             for(Line l :lines){
-
             }
-            return res.setData(lines);
+            return HttpResult.success(lines);
         }catch (Exception e){
             logger.error("请求线路异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
+            return HttpResult.ServerError(e);
         }
     }
     /**
@@ -99,17 +97,15 @@ public class LineController {
     public HttpResult getLineTower(
             @Range(min = 1, message = "LineId should > 0") @RequestParam Integer line,
             @RequestParam(required = false,defaultValue = "0")Integer debug){
-        HttpResult res = new HttpResult();
         try {
             List<Tower> towers = lineService.getTower(line);
             if(towers == null){
-                res.setCode(500);
-                return res.setMessage("internal error");
+                return HttpResult.ServerError("Cannot find any tower of line " + line);
             }
-            return res.setData(towers);
+            return HttpResult.success(towers);
         }catch (Exception e){
             logger.error("请求线路异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
+            return HttpResult.ServerError(e);
         }
     }
 }

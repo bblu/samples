@@ -33,7 +33,7 @@ public class FileSystemStorageService implements StorageService {
             }
             String md5 = DigestUtils.md5DigestAsHex(file.getInputStream());
             Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
-            return md5
+            return md5;
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }

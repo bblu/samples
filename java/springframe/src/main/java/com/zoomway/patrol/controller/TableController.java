@@ -30,63 +30,16 @@ public class TableController {
      */
     @GetMapping(value = "/")
     public HttpResult getLine(@RequestParam(required = false,defaultValue = "list")String style){
-        HttpResult res = new HttpResult();
         try {
             List<Line> lines = lineService.getLine();
             if(lines == null){
-                res.setCode(500);
-                return res.setMessage("internal error");
+                return HttpResult.ServerError("Cannot find any power line");
             }
-            if(style.equals("tree")){
+            return HttpResult.success(lines);
+        }catch (Exception e){
+            logger.error("请求线路异常" + e.getMessage());
+            return HttpResult.ServerError(e);
+        }
+    }
 
-            }
-            return res.setData(lines);
-        }catch (Exception e){
-            logger.error("请求线路异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
-        }
-    }
-    /**
-     * 批量查询 by wblu @ 2019-06-19
-     *
-     * @param debug
-     */
-    @GetMapping(value = "/list")
-    public HttpResult getLine(@RequestParam(required = false,defaultValue = "0")Integer debug){
-        HttpResult res = new HttpResult();
-        try {
-            List<Line> lines = lineService.getLine();
-            if(lines == null){
-                res.setCode(500);
-                return res.setMessage("internal error");
-            }
-            return res.setData(lines);
-        }catch (Exception e){
-            logger.error("请求线路异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
-        }
-    }
-    /**
-     * 批量查询 by wblu @ 2019-06-19
-     *
-     * @param debug
-     */
-    @GetMapping(value = "/tree")
-    public HttpResult getLineTree(@RequestParam(required = false,defaultValue = "0")Integer debug){
-        HttpResult res = new HttpResult();
-        try {
-            List<Line> lines = lineService.getLine();
-            if(lines == null){
-                res.setCode(500);
-                return res.setMessage("internal error");
-            }
-            for(Line l :lines){
-
-            }
-            return res.setData(lines);
-        }catch (Exception e){
-            logger.error("请求线路异常" + e.getMessage());
-            return res.setMessage(e.getMessage());
-        }
-    }
 }
