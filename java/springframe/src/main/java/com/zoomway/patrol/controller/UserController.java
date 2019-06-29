@@ -83,24 +83,22 @@ public class UserController {
             return HttpResult.ParamError(map);
         }catch (Exception e){
             logger.error("登陆异常" + e.getMessage());
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            return HttpResult.ServerError(e);
         }
     }
 
     @RequestMapping(path={"/logout"},method = {RequestMethod.POST})
-    public ResponseEntity<?> logoutPostJson(HttpServletRequest request){
+    public HttpResult logoutPostJson(HttpServletRequest request){
         try{
             String token = request.getHeader("X-Token");
             int c = userService.logout(token);
             if(c==1){
-                return ResponseEntity.ok().body(token);
+                return HttpResult.success(token);
             }
-            Map<String,Object> map = new HashMap<>();
-            map.put("error","logout failed");
-            return ResponseEntity.badRequest().body(map);
+            return HttpResult.ParamError("logout failed");
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<>(e,HttpStatus.INTERNAL_SERVER_ERROR);
+            return HttpResult.ServerError(e);
         }
     }
     //登陆

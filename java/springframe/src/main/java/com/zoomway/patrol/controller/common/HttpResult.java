@@ -15,6 +15,9 @@ public class HttpResult extends ResponseEntity<Map> {
         error.put("error",msg);
         return new HttpResult(error,HttpStatus.BAD_REQUEST);
     }
+    public static HttpResult ParamError(Map msgMap){
+        return new HttpResult(msgMap,HttpStatus.BAD_REQUEST);
+    }
 
     public static HttpResult ServerError(Object obj){
         Map<String,Object> error = new HashMap<>();

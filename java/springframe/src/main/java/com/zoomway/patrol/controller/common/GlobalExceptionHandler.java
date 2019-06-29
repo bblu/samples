@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @ControllerAdvice
@@ -25,8 +27,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
-    public HttpResult resolveConstraintViolationException(ConstraintViolationException ex) {
-        HttpResult returnData = new HttpResult(400);
+    public Map resolveConstraintViolationException(ConstraintViolationException ex) {
+        Map<String,String> returnData = new HashMap<>();
         Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
         if (!CollectionUtils.isEmpty(constraintViolations)) {
             StringBuilder msgBuilder = new StringBuilder();
@@ -37,19 +39,19 @@ public class GlobalExceptionHandler {
                 valBuilder.append(split).append(cv.getPropertyPath());
                 split = ",";
             }
-            returnData.setMessage(msgBuilder.toString());
-            returnData.setData(valBuilder.toString());
+            returnData.put("error", msgBuilder.toString());
+            returnData.put("data", valBuilder.toString());
             return returnData;
         }
-        returnData.setMessage(ex.getMessage());
+        returnData.put("error", ex.getMessage());
         return returnData;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public HttpResult resolveMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        HttpResult returnData = new HttpResult(400);
+    public Map resolveMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        Map<String,String> returnData = new HashMap<>();
         List<ObjectError> objectErrors = ex.getBindingResult().getAllErrors();
         if (!CollectionUtils.isEmpty(objectErrors)) {
             StringBuilder msgBuilder = new StringBuilder();
@@ -59,10 +61,10 @@ public class GlobalExceptionHandler {
                 msgBuilder.append(split).append(objectError.getDefaultMessage());
                 split = ",";
             }
-            returnData.setMessage(msgBuilder.toString());
+            returnData.put("error", msgBuilder.toString());
             return returnData;
         }
-        returnData.setMessage(ex.getMessage());
+        returnData.put("error", ex.getMessage());
         return returnData;
     }
 }
