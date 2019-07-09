@@ -38,7 +38,6 @@ public class Tower {
         this.serial = serial;
     }
 
-
     public String getCenter() {
         return center;
     }

@@ -31,10 +31,11 @@ public class FileSystemStorageService implements StorageService {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
-            String md5 = DigestUtils.md5DigestAsHex(file.getInputStream());
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
-            return md5;
+            Path filePath = this.rootLocation.resolve(file.getOriginalFilename());
+            Files.copy(file.getInputStream(), filePath);
+            return filePath.toString();
         } catch (IOException e) {
+            e.printStackTrace();
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }
     }
