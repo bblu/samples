@@ -14,6 +14,6 @@ public interface TowerDAO extends BaseDAO<Tower> {
 
     Tower getById(@Param("id") int id);
 
-    Integer updateBBox(@Param("id") int id,@Param("bbox") String bbox);
+    Integer updateGeometry(@Param("id") int id,@Param("bbox") String bbox);
 
 }

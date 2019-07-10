@@ -18,6 +18,16 @@ public class Tower {
     private float height;
     private float width;
 
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    private int number;
+
     public int getId() {
         return id;
     }
