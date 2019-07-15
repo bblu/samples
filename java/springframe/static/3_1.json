@@ -1,0 +1,26 @@
+{
+	"version": "1.4",
+	"octreeDir": "pointcolud",
+	"boundingBox": {
+		"lx": 516152.81,
+		"ly": 4010673.48,
+		"lz": 149.15,
+		"ux": 516161.12,
+		"uy": 4010678.79,
+		"uz": 173.78
+	},
+	"tightBoundingBox": {
+		"lx": 516152.81,
+		"ly": 4010673.48,
+		"lz": 149.15,
+		"ux": 516161.12,
+		"uy": 4010678.79,
+		"uz": 173.78
+	},
+	"pointAttributes": "LAS",
+	"spacing": 0.0750000029802322,
+	"scale": 0.001,
+	"hierarchy": [
+		["3_1_0.las", 5202]
+	]
+}

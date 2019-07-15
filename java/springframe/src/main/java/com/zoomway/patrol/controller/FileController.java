@@ -1,10 +1,11 @@
 package com.zoomway.patrol.controller;
 
 import com.zoomway.patrol.controller.common.HttpResult;
-import com.zoomway.patrol.entity.Task;
-import com.zoomway.patrol.service.TaskService;
+//import com.zoomway.patrol.service.FileService;
+import com.zoomway.patrol.service.storage.StorageException;
 import com.zoomway.patrol.service.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.hibernate.validator.constraints.Range;
@@ -12,8 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 //@EnableTransactionManagement
 
@@ -30,8 +29,8 @@ public class FileController {
     public FileController(StorageService storageService) {
         this.storageService = storageService;
     }
-    @Autowired
-    TaskService service;
+    //@Autowired
+    //FileService fileService;
     /**
      * upload file by wblu @ 2019-06-23
      *
@@ -39,24 +38,27 @@ public class FileController {
      */
     @PostMapping(value = "/upload")
     public HttpResult upload(@RequestHeader(name = "X-Tower", required = true) Integer tower,
-                             MultipartFile file)throws Exception{
+            @RequestHeader(name = "X-Line", required = true) Integer line, MultipartFile file)throws Exception{
         HttpResult res = new HttpResult();
-        String fileMd5 = storageService.store(file);
-        // ... 处理文件储存逻辑
-        logger.warn(file.getName());
-        return HttpResult.message("ok");
+        try {
+            String fileMd5 = DigestUtils.md5DigestAsHex(file.getInputStream());
+            String path = storageService.store(file);
+            // ... 处理文件储存逻辑
+            //fileService.updateTowerByFile(tower,path);
+            logger.warn(file.getName() + " Md5=" + fileMd5);
+            return HttpResult.message("ok");
+        }catch(StorageException e){
+            return HttpResult.ServerError(e);
+        }
+
     }
 /**
  * 任务详情 by wblu @ 2019-05-28
  *
  * @param id       任务id
  */
-    @GetMapping(value = "/{id}")
-    public Object getById(@Range(min=0,message = "make sure task id is corrent") @PathVariable int id){
-        Task t = service.getSingle(id);
-        HashMap<String,Object> res = new HashMap<>();
-        res.put("data",t);
-        if(id==2)return t;
-        return res;
+    @GetMapping(value = "model/{id}")
+    public HttpResult getById(@Range(min=0,message = "make sure task id is corrent") @PathVariable int id){
+        return HttpResult.success("ok");
     }
 }

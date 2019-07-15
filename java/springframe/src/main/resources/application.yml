@@ -18,18 +18,17 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
-
 mapper:
   mappers: com.zoomway.patrol.dao.BaseDAO
   not-empty: false
   identity: postgresql
-
+storage:
+  location: static/pointcolud
 logging:
   level:
     org.springframework.boot.autoconfigure: warn
     com.zoomway.patrol.*: info
-    # com.patrol.aop.*: debug
-  file: spring2.log
+  file: spring.log
 server:
   servlet:
     session:

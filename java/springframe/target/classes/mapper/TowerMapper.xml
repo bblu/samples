@@ -12,4 +12,8 @@
     <select id="getById" parameterType="int" resultType="com.zoomway.patrol.entity.Tower">
         SELECT * FROM zw_tower WHERE id = #{id};
     </select>
+
+    <update id="updateBBox" parameterType="int" >
+        update zw_tower set bbox=#{bbox} WHERE id = #{id};
+    </update>
 </mapper>
