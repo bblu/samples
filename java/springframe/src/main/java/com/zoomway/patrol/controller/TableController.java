@@ -28,7 +28,7 @@ public class TableController {
      *
      * @param style  返回数据格式默认list，否则是tree
      */
-    @GetMapping(value = "/")
+    @GetMapping(value = "/list")
     public HttpResult getLine(@RequestParam(required = false,defaultValue = "list")String style){
         try {
             List<Line> lines = lineService.getLine();

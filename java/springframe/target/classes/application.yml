@@ -26,7 +26,8 @@ mapper:
 
 logging:
   level:
-    com.patrol.*: warn
+    org.springframework.boot.autoconfigure: warn
+    com.zoomway.patrol.*: info
     # com.patrol.aop.*: debug
   file: spring2.log
 server:
