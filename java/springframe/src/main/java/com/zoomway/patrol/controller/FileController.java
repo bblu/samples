@@ -1,7 +1,7 @@
 package com.zoomway.patrol.controller;
 
 import com.zoomway.patrol.controller.common.HttpResult;
-//import com.zoomway.patrol.service.FileService;
+import com.zoomway.patrol.service.FileService;
 import com.zoomway.patrol.service.storage.StorageException;
 import com.zoomway.patrol.service.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ public class FileController {
     public FileController(StorageService storageService) {
         this.storageService = storageService;
     }
-    //@Autowired
-    //FileService fileService;
+    @Autowired
+    FileService fileService;
     /**
      * upload file by wblu @ 2019-06-23
      *
@@ -44,7 +44,7 @@ public class FileController {
             String fileMd5 = DigestUtils.md5DigestAsHex(file.getInputStream());
             String path = storageService.store(file);
             // ... 处理文件储存逻辑
-            //fileService.updateTowerByFile(tower,path);
+            fileService.updateTowerByFile(tower,path);
             logger.warn(file.getName() + " Md5=" + fileMd5);
             return HttpResult.message("ok");
         }catch(StorageException e){
