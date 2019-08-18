@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zoomway.patrol.dao.TowerStyleDAO">
+    <select id="getAll" resultType="com.zoomway.patrol.entity.TowerStyle">
+        SELECT id,name,voltage FROM zw_tower_style ORDER BY id;
+    </select>
+
+    <select id="getById" parameterType="int" resultType="com.zoomway.patrol.entity.TowerStyle">
+        SELECT * FROM zw_tower_style WHERE id = #{id};
+    </select>
+</mapper>
